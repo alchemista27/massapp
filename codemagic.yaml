@@ -1,9 +1,10 @@
 workflows:
   massapp_workflow:
-    name: Build MassApp APK
+    name: Build MassApp APK (Auto Generate Android Folder)
     environment:
       flutter: stable
     scripts:
+      - flutter create .
       - flutter pub get
       - flutter build apk --release
     artifacts:
