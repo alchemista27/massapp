@@ -1,43 +1,35 @@
+// Import express
 const express = require('express');
-const cors = require('cors');
-const { Pool } = require('pg');
-require('dotenv').config();
-
 const app = express();
-const port = process.env.PORT || 5000;
 
-app.use(cors());
+// Middleware (Opsional) - Untuk parsing JSON
 app.use(express.json());
 
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-  ssl: { rejectUnauthorized: false }, // Wajib untuk Railway DB
+// Route Test (Root)
+app.get('/', (req, res) => {
+  res.send('Hello from MassApp Backend!');
 });
 
-// ✅ API GET Materi
-app.get('/materi', async (req, res) => {
-  const result = await pool.query('SELECT * FROM materi ORDER BY id DESC');
-  res.json(result.rows);
+// Contoh Route API Materi (Dummy Data)
+app.get('/api/materi', (req, res) => {
+  res.json([
+    {
+      id: 1,
+      judul: 'Materi 1',
+      deskripsi: 'Deskripsi Materi 1'
+    },
+    {
+      id: 2,
+      judul: 'Materi 2',
+      deskripsi: 'Deskripsi Materi 2'
+    }
+  ]);
 });
 
-// ✅ API POST Submit Materi
-app.post('/materi/submit', async (req, res) => {
-  const { title, description, video_url, pdf_url } = req.body;
-  await pool.query(
-    'INSERT INTO materi (title, description, video_url, pdf_url) VALUES ($1, $2, $3, $4)',
-    [title, description, video_url, pdf_url]
-  );
-  res.sendStatus(200);
-});
+// Konfigurasi Port (Default: 5000)
+const PORT = process.env.PORT || 5000;
 
-// ✅ API POST Submit Project
-app.post('/projects/submit', async (req, res) => {
-  const { user_id, materi_id, file_url } = req.body;
-  await pool.query(
-    'INSERT INTO project_submissions (user_id, materi_id, file_url) VALUES ($1, $2, $3)',
-    [user_id, materi_id, file_url]
-  );
-  res.sendStatus(200);
+// Start Server
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
 });
-
-app.listen(port, () => console.log(`Server running on port ${port}`));
