@@ -1,14 +1,23 @@
 workflows:
   massapp_workflow:
-    name: Build MassApp APK
+    name: MassApp Build Workflow
+    max_build_duration: 60
     environment:
-      flutter: stable
+      flutter: "3.22.1"  # Gunakan versi Flutter terbaru (pastikan ini sama seperti yang terbaru di Codemagic)
+      vars:
+        APP_ID: "com.alchemista27.massapp"  # Package Name kamu (optional, hanya contoh)
     scripts:
-      - rm -rf build/
-      - rm -rf .dart_tool/
-      - flutter clean
-      - flutter pub get
-      - flutter build apk --release
+      - name: Clean previous build artifacts
+        script: |
+          rm -rf build/
+          rm -rf .dart_tool/
+          flutter clean
+      - name: Install dependencies
+        script: |
+          flutter pub get
+      - name: Build APK Release
+        script: |
+          flutter build apk --release
     artifacts:
       - build/app/outputs/flutter-apk/app-release.apk
     working_directory: massapp_frontend
