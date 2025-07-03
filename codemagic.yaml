@@ -1,11 +1,11 @@
 workflows:
   massapp_workflow:
-    name: Build MassApp Flutter APK
+    name: Build MassApp APK
     environment:
       flutter: stable
     scripts:
-      - cd massapp_frontend
       - flutter pub get
       - flutter build apk --release
     artifacts:
-      - massapp_frontend/build/app/outputs/flutter-apk/app-release.apk
+      - build/app/outputs/flutter-apk/app-release.apk
+    working_directory: massapp_frontend
