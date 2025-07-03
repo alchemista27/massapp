@@ -50,6 +50,14 @@ class DashboardPage extends StatelessWidget {
               icon: const Icon(Icons.assignment),
               label: const Text('Tugas Proyek'),
             ),
+            const SizedBox(height: 16),
+            ElevatedButton.icon(
+              onPressed: () {
+                Navigator.pushNamed(context, AppRoutes.materiSubmit);
+              },
+              icon: const Icon(Icons.add_box),
+              label: const Text('Tambah Materi Baru'),
+            ),
           ],
         ),
       ),

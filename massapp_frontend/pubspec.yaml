@@ -1,5 +1,5 @@
 name: massapp_frontend
-description: Aplikasi MassApp - Pembelajaran Pendidikan Jasmani berbasis proyek
+description: Aplikasi MassApp - Pembelajaran Pendidikan Jasmani Berbasis Proyek
 version: 1.0.0+1
 
 environment:
@@ -12,6 +12,7 @@ dependencies:
   firebase_auth: ^4.17.7
   http: ^1.2.1
   image_picker: ^1.0.7
+  file_picker: ^6.1.1
   url_launcher: ^6.2.6
 
 dev_dependencies:

@@ -40,4 +40,28 @@ class ApiService {
       throw Exception('Gagal mengirim tugas proyek');
     }
   }
+
+  /// Submit materi baru (judul, deskripsi, video URL, PDF URL)
+  Future<void> submitMateri({
+    required String title,
+    required String description,
+    required String videoUrl,
+    required String pdfUrl,
+  }) async {
+    final url = Uri.parse('$baseUrl/materi/submit');
+    final response = await http.post(
+      url,
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode({
+        'title': title,
+        'description': description,
+        'video_url': videoUrl,
+        'pdf_url': pdfUrl,
+      }),
+    );
+
+    if (response.statusCode != 200) {
+      throw Exception('Gagal kirim materi ke server');
+    }
+  }
 }
