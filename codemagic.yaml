@@ -1,6 +1,6 @@
 workflows:
   massapp_workflow:
-    name: Build MassApp
+    name: Build MassApp Flutter APK
     environment:
       flutter: stable
     scripts:
