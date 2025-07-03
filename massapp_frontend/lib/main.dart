@@ -13,7 +13,6 @@ import 'package:massapp_frontend/utils/app_routes.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-
   runApp(const MassApp());
 }
 
