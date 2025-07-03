@@ -1,67 +1,43 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:massapp_frontend/models/materi_model.dart';
 
 class ApiService {
-  // Ganti dengan URL backend Railway kamu
-  static const String baseUrl = 'https://massapp-backend.up.railway.app';
+  static const String baseUrl = 'https://massapp-backend.onrender.com'; // Ganti URL backend nanti
 
-  /// Ambil daftar materi
-  Future<List<MateriModel>> getMateriList() async {
-    final url = Uri.parse('$baseUrl/materi');
-    final response = await http.get(url);
+  // Ambil daftar materi
+  static Future<List<dynamic>> fetchMateri() async {
+    final response = await http.get(Uri.parse('$baseUrl/materi'));
 
     if (response.statusCode == 200) {
-      final List data = jsonDecode(response.body);
-      return data.map((e) => MateriModel.fromJson(e)).toList();
+      return json.decode(response.body);
     } else {
-      throw Exception('Gagal memuat materi');
+      throw Exception('Gagal mengambil data materi');
     }
   }
 
-  /// Submit tugas proyek
-  Future<void> submitProject({
-    required String userId,
-    required int materiId,
-    required String fileUrl,
-  }) async {
-    final url = Uri.parse('$baseUrl/projects/submit');
+  // Submit materi baru
+  static Future<void> submitMateri(Map<String, dynamic> data) async {
     final response = await http.post(
-      url,
+      Uri.parse('$baseUrl/materi/submit'),
       headers: {'Content-Type': 'application/json'},
-      body: jsonEncode({
-        'user_id': userId,
-        'materi_id': materiId,
-        'file_url': fileUrl,
-      }),
+      body: json.encode(data),
     );
 
     if (response.statusCode != 200) {
-      throw Exception('Gagal mengirim tugas proyek');
+      throw Exception('Gagal submit materi');
     }
   }
 
-  /// Submit materi baru (judul, deskripsi, video URL, PDF URL)
-  Future<void> submitMateri({
-    required String title,
-    required String description,
-    required String videoUrl,
-    required String pdfUrl,
-  }) async {
-    final url = Uri.parse('$baseUrl/materi/submit');
+  // Submit tugas proyek
+  static Future<void> submitProject(Map<String, dynamic> data) async {
     final response = await http.post(
-      url,
+      Uri.parse('$baseUrl/projects/submit'),
       headers: {'Content-Type': 'application/json'},
-      body: jsonEncode({
-        'title': title,
-        'description': description,
-        'video_url': videoUrl,
-        'pdf_url': pdfUrl,
-      }),
+      body: json.encode(data),
     );
 
     if (response.statusCode != 200) {
-      throw Exception('Gagal kirim materi ke server');
+      throw Exception('Gagal submit proyek');
     }
   }
 }
