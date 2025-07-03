@@ -4,6 +4,9 @@ workflows:
     environment:
       flutter: stable
     scripts:
+      - rm -rf build/
+      - rm -rf .dart_tool/
+      - flutter clean
       - flutter pub get
       - flutter build apk --release
     artifacts:
