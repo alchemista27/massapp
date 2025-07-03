@@ -1,0 +1,43 @@
+# =========================================
+# Global Git Ignore for MassApp Monorepo
+# =========================================
+
+# =============================
+# Flutter (massapp_frontend)
+# =============================
+massapp_frontend/.dart_tool/
+massapp_frontend/.idea/
+massapp_frontend/.packages
+massapp_frontend/build/
+massapp_frontend/pubspec.lock
+massapp_frontend/ios/Flutter/Flutter.framework/
+massapp_frontend/ios/Flutter/Flutter.podspec
+massapp_frontend/ios/Runner.xcworkspace/
+massapp_frontend/ios/Pods/
+massapp_frontend/ios/.symlinks/
+massapp_frontend/ios/Flutter/App.framework
+massapp_frontend/ios/Flutter/engine/
+massapp_frontend/ios/.generated/
+massapp_frontend/android/.gradle/
+massapp_frontend/android/app/build/
+massapp_frontend/android/gradle/
+massapp_frontend/android/local.properties
+massapp_frontend/web/.dart_tool/
+massapp_frontend/firebase.json
+massapp_frontend/.firebase/
+
+# =================================
+# Node.js Backend (massapp_backend)
+# =================================
+massapp_backend/node_modules/
+massapp_backend/.env
+massapp_backend/npm-debug.log*
+massapp_backend/yarn-debug.log*
+massapp_backend/yarn-error.log*
+
+# =============================
+# Global ignores
+# =============================
+*.log
+.DS_Store
+.vscode/
