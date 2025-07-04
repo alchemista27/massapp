@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../services/api_service.dart';
 
 class ProjectSubmitPage extends StatefulWidget {
   const ProjectSubmitPage({super.key});
@@ -8,75 +9,76 @@ class ProjectSubmitPage extends StatefulWidget {
 }
 
 class _ProjectSubmitPageState extends State<ProjectSubmitPage> {
-  final _formKey = GlobalKey<FormState>();
-  final TextEditingController _judulController = TextEditingController();
-  final TextEditingController _deskripsiController = TextEditingController();
+  final TextEditingController _userIdController = TextEditingController();
+  final TextEditingController _materiIdController = TextEditingController();
+  final TextEditingController _fileUrlController = TextEditingController();
 
-  @override
-  void dispose() {
-    _judulController.dispose();
-    _deskripsiController.dispose();
-    super.dispose();
+  bool _isLoading = false;
+
+  Future<void> _submitProject() async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    try {
+      final response = await ApiService.submitProject(
+        userId: _userIdController.text,
+        materiId: _materiIdController.text,
+        fileUrl: _fileUrlController.text,
+      );
+
+      if (response.statusCode == 200) {
+        Navigator.pop(context);
+      } else {
+        _showError('Gagal submit project.');
+      }
+    } catch (e) {
+      _showError('Terjadi kesalahan koneksi.');
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
+    }
   }
 
-  void _submitProject() {
-    if (_formKey.currentState!.validate()) {
-      // TODO: Integrasi API nanti
-      showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-          title: const Text('Project Disubmit'),
-          content: Text(
-              'Judul: ${_judulController.text}\nDeskripsi: ${_deskripsiController.text}'),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: const Text('OK'),
-            ),
-          ],
-        ),
-      );
-    }
+  void _showError(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(message)),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Submit Project Baru'),
+        title: const Text('Submit Project'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            children: [
-              TextFormField(
-                controller: _judulController,
-                decoration: const InputDecoration(
-                  labelText: 'Judul Project',
-                  border: OutlineInputBorder(),
-                ),
-                validator: (value) =>
-                    value == null || value.isEmpty ? 'Wajib diisi' : null,
-              ),
-              const SizedBox(height: 16),
-              TextFormField(
-                controller: _deskripsiController,
-                decoration: const InputDecoration(
-                  labelText: 'Deskripsi Project',
-                  border: OutlineInputBorder(),
-                ),
-                validator: (value) =>
-                    value == null || value.isEmpty ? 'Wajib diisi' : null,
-              ),
-              const SizedBox(height: 24),
-              ElevatedButton(
-                onPressed: _submitProject,
-                child: const Text('Submit Project'),
-              ),
-            ],
-          ),
+        child: Column(
+          children: [
+            TextField(
+              controller: _userIdController,
+              decoration: const InputDecoration(labelText: 'User ID'),
+            ),
+            const SizedBox(height: 16),
+            TextField(
+              controller: _materiIdController,
+              decoration: const InputDecoration(labelText: 'Materi ID'),
+            ),
+            const SizedBox(height: 16),
+            TextField(
+              controller: _fileUrlController,
+              decoration: const InputDecoration(labelText: 'File URL'),
+            ),
+            const SizedBox(height: 24),
+            _isLoading
+                ? const CircularProgressIndicator()
+                : ElevatedButton(
+                    onPressed: _submitProject,
+                    child: const Text('Submit Project'),
+                  ),
+          ],
         ),
       ),
     );

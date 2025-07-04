@@ -1,23 +1,25 @@
 workflows:
-  massapp_workflow:
-    name: MassApp Build Workflow
+  massapp-release:
+    name: MassApp Release Build
     max_build_duration: 60
     environment:
-      flutter: "3.22.1"  # Gunakan versi Flutter terbaru (pastikan ini sama seperti yang terbaru di Codemagic)
+      flutter: stable
       vars:
-        APP_ID: "com.alchemista27.massapp"  # Package Name kamu (optional, hanya contoh)
+        GOOGLE_SERVICES_JSON: $GCLOUD_SERVICE_ACCOUNT_CREDENTIALS
     scripts:
-      - name: Clean previous build artifacts
-        script: |
-          rm -rf build/
-          rm -rf .dart_tool/
-          flutter clean
-      - name: Install dependencies
-        script: |
-          flutter pub get
-      - name: Build APK Release
-        script: |
-          flutter build apk --release
+      # Step 1: Buat google-services.json dari Environment Variable
+      - echo "$GOOGLE_SERVICES_JSON" > android/app/google-services.json
+
+      # Step 2: Install dependencies
+      - flutter pub get
+
+      # Step 3: Build APK Release
+      - flutter build apk --release
+
     artifacts:
       - build/app/outputs/flutter-apk/app-release.apk
-    working_directory: massapp_frontend
+
+    publishing:
+      email:
+        recipients:
+          - septian.j@gmail.com
