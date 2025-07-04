@@ -4,6 +4,14 @@ import 'screens/auth/register_page.dart';
 import 'screens/dashboard/dashboard_page.dart';
 import 'screens/materi/materi_list_page.dart';
 import 'screens/materi/materi_submit_page.dart';
+import 'screens/project/project_list_page.dart';
+import 'screens/project/project_submit_page.dart';
+import 'screens/profile/profile_page.dart';
+import 'screens/settings/settings_page.dart';
+import 'screens/about/about_page.dart';
+import 'screens/history/history_page.dart';
+import 'screens/notifications/notifications_page.dart';
+import 'screens/help/help_page.dart';
 import 'utils/app_routes.dart';
 
 void main() {
@@ -28,6 +36,14 @@ class MassApp extends StatelessWidget {
         AppRoutes.dashboard: (context) => const DashboardPage(),
         AppRoutes.materiList: (context) => const MateriListPage(),
         AppRoutes.materiSubmit: (context) => const MateriSubmitPage(),
+        AppRoutes.projectList: (context) => const ProjectListPage(),
+        AppRoutes.projectSubmit: (context) => const ProjectSubmitPage(),
+        AppRoutes.profile: (context) => const ProfilePage(),
+        AppRoutes.settings: (context) => const SettingsPage(),
+        AppRoutes.about: (context) => const AboutPage(),
+        AppRoutes.history: (context) => const HistoryPage(),
+        AppRoutes.notifications: (context) => const NotificationsPage(),
+        AppRoutes.help: (context) => const HelpPage(),
       },
     );
   }
