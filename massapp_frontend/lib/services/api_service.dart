@@ -91,4 +91,15 @@ class ApiService {
     );
     return response;
   }
+
+// Fetch MateriDetail
+static Future<Map<String, dynamic>> fetchMateriDetail(String id) async {
+    final response = await http.get(Uri.parse('$baseUrl/materi/$id'));
+
+    if (response.statusCode == 200) {
+      return json.decode(response.body);
+    } else {
+      throw Exception('Failed to load materi detail');
+    }
+  }
 }
