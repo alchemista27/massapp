@@ -7,7 +7,8 @@ workflows:
       vars:
         GOOGLE_SERVICES_JSON: $GCLOUD_SERVICE_ACCOUNT_CREDENTIALS
     scripts:
-      # Step 1: Buat google-services.json dari Environment Variable
+      # Step 1: Buat google-services.json
+      - mkdir -p android/app
       - echo "$GOOGLE_SERVICES_JSON" > android/app/google-services.json
 
       # Step 2: Install dependencies
@@ -19,7 +20,9 @@ workflows:
     artifacts:
       - build/app/outputs/flutter-apk/app-release.apk
 
+    working_directory: massapp_frontend
+
     publishing:
       email:
         recipients:
-          - septian.j@gmail.com
+          - massapp.devepment@gmail.com
