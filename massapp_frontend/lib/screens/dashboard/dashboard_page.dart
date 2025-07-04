@@ -26,6 +26,13 @@ class DashboardPage extends StatelessWidget {
               },
               child: const Text('Lihat Daftar Materi'),
             ),
+            const SizedBox(height: 16),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pushNamed(context, AppRoutes.materiSubmit);
+              },
+              child: const Text('Tambah Materi Baru'),
+            ),
           ],
         ),
       ),

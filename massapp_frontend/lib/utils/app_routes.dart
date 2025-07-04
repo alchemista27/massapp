@@ -3,4 +3,5 @@ class AppRoutes {
   static const String register = '/register';
   static const String dashboard = '/dashboard';
   static const String materiList = '/materi';
+  static const String materiSubmit = '/materi/submit';
 }

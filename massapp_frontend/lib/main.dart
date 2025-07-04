@@ -3,6 +3,7 @@ import 'screens/auth/login_page.dart';
 import 'screens/auth/register_page.dart';
 import 'screens/dashboard/dashboard_page.dart';
 import 'screens/materi/materi_list_page.dart';
+import 'screens/materi/materi_submit_page.dart';
 import 'utils/app_routes.dart';
 
 void main() {
@@ -26,6 +27,7 @@ class MassApp extends StatelessWidget {
         AppRoutes.register: (context) => const RegisterPage(),
         AppRoutes.dashboard: (context) => const DashboardPage(),
         AppRoutes.materiList: (context) => const MateriListPage(),
+        AppRoutes.materiSubmit: (context) => const MateriSubmitPage(),
       },
     );
   }
