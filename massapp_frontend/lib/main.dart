@@ -13,6 +13,10 @@ import 'screens/history/history_page.dart';
 import 'screens/notifications/notifications_page.dart';
 import 'screens/help/help_page.dart';
 import 'utils/app_routes.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
+ // ini file hasil flutterfire configure
+
 
 void main() {
   runApp(const MassApp());

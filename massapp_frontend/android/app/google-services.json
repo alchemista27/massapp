@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "566010385220",
+    "project_id": "massapp-b2727",
+    "storage_bucket": "massapp-b2727.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:566010385220:android:2006be183e4ddda709bd11",
+        "android_client_info": {
+          "package_name": "com.example.massapp_frontend"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC-5lwHy0-1v5vk8Sqsr0FUztksmKjvSDU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:566010385220:android:3fb7afb9fe6b50ec09bd11",
+        "android_client_info": {
+          "package_name": "com.massapp.massapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC-5lwHy0-1v5vk8Sqsr0FUztksmKjvSDU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
