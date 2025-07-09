@@ -1,35 +1,49 @@
-// Import express
 const express = require('express');
+const authRoutes = require('./routes/authRoutes');
+const cors = require('cors');
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcryptjs');
+const { Pool } = require('pg');
+require('dotenv').config();
+
 const app = express();
-
-// Middleware (Opsional) - Untuk parsing JSON
+app.use(cors());
 app.use(express.json());
+app.use('/api', authRoutes);
 
-// Route Test (Root)
-app.get('/', (req, res) => {
-  res.send('Hello from MassApp Backend!');
+const pool = new Pool({
+  user: process.env.DB_USER,
+  host: process.env.DB_HOST,
+  database: process.env.DB_NAME,
+  password: process.env.DB_PASS,
+  port: 5432,
 });
 
-// Contoh Route API Materi (Dummy Data)
-app.get('/api/materi', (req, res) => {
-  res.json([
-    {
-      id: 1,
-      judul: 'Materi 1',
-      deskripsi: 'Deskripsi Materi 1'
-    },
-    {
-      id: 2,
-      judul: 'Materi 2',
-      deskripsi: 'Deskripsi Materi 2'
-    }
-  ]);
+const JWT_SECRET = process.env.JWT_SECRET;
+
+// User Registration
+app.post('/api/register', async (req, res) => {
+  const { fullName, id, email, password, role } = req.body;
+  const hashedPassword = await bcrypt.hash(password, 10);
+  await pool.query(
+    'INSERT INTO users (full_name, id_number, email, password, role) VALUES ($1, $2, $3, $4, $5)',
+    [fullName, id, email, hashedPassword, role]
+  );
+  res.json({ message: 'User registered' });
 });
 
-// Konfigurasi Port (Default: 5000)
-const PORT = process.env.PORT || 5000;
+// User Login
+app.post('/api/login', async (req, res) => {
+  const { email, password } = req.body;
+  const userResult = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
+  const user = userResult.rows[0];
+  if (!user || !(await bcrypt.compare(password, user.password))) {
+    return res.status(401).json({ error: 'Invalid credentials' });
+  }
+  const token = jwt.sign({ id: user.id, role: user.role }, JWT_SECRET, { expiresIn: '1d' });
+  res.json({ token, user: { id: user.id, fullName: user.full_name, role: user.role } });
+});
 
-// Start Server
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+app.listen(5000, '0.0.0.0', () => {
+  console.log('Backend running on port 5000');
 });
