@@ -6,7 +6,7 @@ class ApiService {
 
   // Fetch Materi List (Dummy)
   static Future<List<dynamic>> fetchMateriList() async {
-    final response = await http.get(Uri.parse('$baseUrl/materi'));
+    final response = await http.get(Uri.parse('http://107.174.26.23/api'));
     if (response.statusCode == 200) {
       return jsonDecode(response.body);
     } else {
@@ -16,7 +16,7 @@ class ApiService {
 
   // Login API
   static Future<http.Response> login(String email, String password) async {
-    final url = Uri.parse('$baseUrl/login');
+    final url = Uri.parse('http://107.174.26.23/api');
     final response = await http.post(
       url,
       body: {'email': email, 'password': password},
@@ -26,7 +26,7 @@ class ApiService {
 
   // Register API
   static Future<http.Response> register(String email, String password) async {
-    final url = Uri.parse('$baseUrl/register');
+    final url = Uri.parse('http://107.174.26.23/api');
     final response = await http.post(
       url,
       body: {'email': email, 'password': password},
@@ -36,7 +36,7 @@ class ApiService {
 
   // Fetch Project List (Dummy)
   static Future<List<dynamic>> fetchProjectList() async {
-    final response = await http.get(Uri.parse('$baseUrl/project'));
+    final response = await http.get(Uri.parse('http://107.174.26.23/api'));
     if (response.statusCode == 200) {
       return jsonDecode(response.body);
     } else {
@@ -46,7 +46,7 @@ class ApiService {
 
   // Fetch Project Detail (Dummy)
   static Future<Map<String, dynamic>> fetchProjectDetail(String id) async {
-    final response = await http.get(Uri.parse('$baseUrl/project/$id'));
+    final response = await http.get(Uri.parse('http://107.174.26.23/api'));
     if (response.statusCode == 200) {
       return jsonDecode(response.body);
     } else {
@@ -61,7 +61,7 @@ class ApiService {
     required String videoUrl,
     required String pdfUrl,
   }) async {
-    final url = Uri.parse('$baseUrl/materi');
+    final url = Uri.parse('http://107.174.26.23/api');
     final response = await http.post(
       url,
       body: {
@@ -80,7 +80,7 @@ class ApiService {
     required String materiId,
     required String fileUrl,
   }) async {
-    final url = Uri.parse('$baseUrl/project');
+    final url = Uri.parse('http://107.174.26.23/api');
     final response = await http.post(
       url,
       body: {
@@ -94,7 +94,7 @@ class ApiService {
 
 // Fetch MateriDetail
 static Future<Map<String, dynamic>> fetchMateriDetail(String id) async {
-    final response = await http.get(Uri.parse('$baseUrl/materi/$id'));
+    final response = await http.get(Uri.parse('http://107.174.26.23/api'));
 
     if (response.statusCode == 200) {
       return json.decode(response.body);
