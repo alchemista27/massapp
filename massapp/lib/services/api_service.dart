@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class ApiService {
-  static const String baseUrl = 'http://107.174.26.23:5000'; // Ganti ini sesuai backend VPS kamu
+  static const String baseUrl = 'http://107.174.26.23/api'; // Ganti ini sesuai backend VPS kamu
 
   // Fetch Materi List (Dummy)
   static Future<List<dynamic>> fetchMateriList() async {
