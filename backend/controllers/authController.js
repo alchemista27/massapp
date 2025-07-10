@@ -1,6 +1,6 @@
 const db = require('../db');
-const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 
 exports.login = async (req, res) => {
   console.log('=== [DEBUG] Login API HIT ===');
@@ -12,18 +12,22 @@ exports.login = async (req, res) => {
     console.log('Query Result:', result.rows);
 
     if (result.rows.length === 0) {
-      return res.status(401).json({ error: 'Email not found' });
+      return res.status(401).json({ error: 'Invalid email or password' });
     }
 
     const user = result.rows[0];
-    const passwordMatch = bcrypt.compareSync(password, user.password);
-    if (!passwordMatch) {
-      return res.status(401).json({ error: 'Incorrect password' });
+    const validPassword = await bcrypt.compare(password, user.password);
+    console.log('Password valid?', validPassword);
+
+    if (!validPassword) {
+      return res.status(401).json({ error: 'Invalid email or password' });
     }
 
-    const token = jwt.sign({ id: user.id, email: user.email, role: user.role }, process.env.JWT_SECRET, {
-      expiresIn: '7d',
-    });
+    const token = jwt.sign(
+      { id: user.id, email: user.email },
+      process.env.JWT_SECRET,
+      { expiresIn: '1h' }
+    );
 
     res.json({ token });
   } catch (error) {
