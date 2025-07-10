@@ -1,0 +1,29 @@
+exports.login = (req, res) => {
+  const { email, password } = req.body;
+  if (email === 'admin@massapp.com' && password === '181818') {
+    res.json({ token: 'dummy-jwt-token' });
+  } else {
+    res.status(401).json({ error: 'Invalid credentials' });
+  } catch (err) {
+
+    console.error("Register error:", err);
+
+    res.status(500).json({ error: "Internal server error" });
+
+  }
+  } catch (err) {
+
+    console.error("Login error:", err);
+
+    res.status(500).json({ error: "Internal server error" });
+  } catch (err) {
+
+    console.error("Register error:", err);
+
+    res.status(500).json({ error: "Internal server error" });
+
+  }
+
+  }
+  }
+};

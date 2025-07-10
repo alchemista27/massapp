@@ -1,0 +1,16 @@
+const db = require('../db');
+
+exports.login = async (req, res) => {
+  console.log('=== [DEBUG] Login API HIT ===');
+  try {
+    console.log("DEBUG: Before DB Query");
+    const result = await db.query('SELECT 1 AS test');
+    console.log("DEBUG: After DB Query");
+    console.log('Query Result:', result.rows);
+
+    res.json({ data: result.rows });
+  } catch (error) {
+    console.error('ERROR:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+};

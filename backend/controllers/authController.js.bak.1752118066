@@ -1,0 +1,19 @@
+const db = require('../db');
+
+exports.login = async (req, res) => {
+  console.log('=== [DEBUG] Login API HIT ===');
+  try {
+    const { email, password } = req.body;
+    console.log('Received:', email, password);
+
+    const result = await db.query(
+  'SELECT * FROM users WHERE email = $1 AND password = $2',
+  [email, password]
+);
+
+    res.json({ data: result.rows });
+  } catch (error) {
+    console.error('ERROR:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+};
