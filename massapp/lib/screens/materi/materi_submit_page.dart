@@ -2,89 +2,46 @@ import 'package:flutter/material.dart';
 import '../../services/api_service.dart';
 
 class MateriSubmitPage extends StatefulWidget {
-  const MateriSubmitPage({super.key});
-
   @override
-  State<MateriSubmitPage> createState() => _MateriSubmitPageState();
+  _MateriSubmitPageState createState() => _MateriSubmitPageState();
 }
 
 class _MateriSubmitPageState extends State<MateriSubmitPage> {
-  final TextEditingController _titleController = TextEditingController();
-  final TextEditingController _descriptionController = TextEditingController();
-  final TextEditingController _videoUrlController = TextEditingController();
-  final TextEditingController _pdfUrlController = TextEditingController();
+  final _judulController = TextEditingController();
+  final _deskripsiController = TextEditingController();
 
-  bool _isLoading = false;
-
-  Future<void> _submitMateri() async {
-    setState(() {
-      _isLoading = true;
-    });
-
-    try {
-      final response = await ApiService.submitMateri(
-        title: _titleController.text,
-        description: _descriptionController.text,
-        videoUrl: _videoUrlController.text,
-        pdfUrl: _pdfUrlController.text,
-      );
-
-      if (response.statusCode == 200) {
-        Navigator.pop(context);
-      } else {
-        _showError('Gagal submit materi.');
-      }
-    } catch (e) {
-      _showError('Terjadi kesalahan koneksi.');
-    } finally {
-      setState(() {
-        _isLoading = false;
-      });
-    }
+  @override
+  void dispose() {
+    _judulController.dispose();
+    _deskripsiController.dispose();
+    super.dispose();
   }
 
-  void _showError(String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(message)),
-    );
+  void _submit() async {
+    final data = {
+      'judul': _judulController.text,
+      'deskripsi': _deskripsiController.text,
+    };
+    final response = await ApiService.submitMateri(data);
+    if (response.statusCode == 200) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Submit Berhasil')));
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Gagal Submit')));
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Submit Materi'),
-      ),
+      appBar: AppBar(title: Text('Submit Materi')),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: EdgeInsets.all(16),
         child: Column(
           children: [
-            TextField(
-              controller: _titleController,
-              decoration: const InputDecoration(labelText: 'Judul'),
-            ),
-            const SizedBox(height: 16),
-            TextField(
-              controller: _descriptionController,
-              decoration: const InputDecoration(labelText: 'Deskripsi'),
-            ),
-            const SizedBox(height: 16),
-            TextField(
-              controller: _videoUrlController,
-              decoration: const InputDecoration(labelText: 'Video URL'),
-            ),
-            const SizedBox(height: 16),
-            TextField(
-              controller: _pdfUrlController,
-              decoration: const InputDecoration(labelText: 'PDF URL'),
-            ),
-            const SizedBox(height: 24),
-            _isLoading
-                ? const CircularProgressIndicator()
-                : ElevatedButton(
-                    onPressed: _submitMateri,
-                    child: const Text('Submit Materi'),
-                  ),
+            TextField(controller: _judulController, decoration: InputDecoration(labelText: 'Judul')),
+            TextField(controller: _deskripsiController, decoration: InputDecoration(labelText: 'Deskripsi')),
+            SizedBox(height: 20),
+            ElevatedButton(onPressed: _submit, child: Text('Submit'))
           ],
         ),
       ),

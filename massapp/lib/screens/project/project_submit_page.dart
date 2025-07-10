@@ -2,82 +2,46 @@ import 'package:flutter/material.dart';
 import '../../services/api_service.dart';
 
 class ProjectSubmitPage extends StatefulWidget {
-  const ProjectSubmitPage({super.key});
-
   @override
-  State<ProjectSubmitPage> createState() => _ProjectSubmitPageState();
+  _ProjectSubmitPageState createState() => _ProjectSubmitPageState();
 }
 
 class _ProjectSubmitPageState extends State<ProjectSubmitPage> {
-  final TextEditingController _userIdController = TextEditingController();
-  final TextEditingController _materiIdController = TextEditingController();
-  final TextEditingController _fileUrlController = TextEditingController();
+  final _namaController = TextEditingController();
+  final _deskripsiController = TextEditingController();
 
-  bool _isLoading = false;
-
-  Future<void> _submitProject() async {
-    setState(() {
-      _isLoading = true;
-    });
-
-    try {
-      final response = await ApiService.submitProject(
-        userId: _userIdController.text,
-        materiId: _materiIdController.text,
-        fileUrl: _fileUrlController.text,
-      );
-
-      if (response.statusCode == 200) {
-        Navigator.pop(context);
-      } else {
-        _showError('Gagal submit project.');
-      }
-    } catch (e) {
-      _showError('Terjadi kesalahan koneksi.');
-    } finally {
-      setState(() {
-        _isLoading = false;
-      });
-    }
+  @override
+  void dispose() {
+    _namaController.dispose();
+    _deskripsiController.dispose();
+    super.dispose();
   }
 
-  void _showError(String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(message)),
-    );
+  void _submit() async {
+    final data = {
+      'nama': _namaController.text,
+      'deskripsi': _deskripsiController.text,
+    };
+    final response = await ApiService.submitProject(data);
+    if (response.statusCode == 200) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Submit Berhasil')));
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Gagal Submit')));
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Submit Project'),
-      ),
+      appBar: AppBar(title: Text('Submit Project')),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: EdgeInsets.all(16),
         child: Column(
           children: [
-            TextField(
-              controller: _userIdController,
-              decoration: const InputDecoration(labelText: 'User ID'),
-            ),
-            const SizedBox(height: 16),
-            TextField(
-              controller: _materiIdController,
-              decoration: const InputDecoration(labelText: 'Materi ID'),
-            ),
-            const SizedBox(height: 16),
-            TextField(
-              controller: _fileUrlController,
-              decoration: const InputDecoration(labelText: 'File URL'),
-            ),
-            const SizedBox(height: 24),
-            _isLoading
-                ? const CircularProgressIndicator()
-                : ElevatedButton(
-                    onPressed: _submitProject,
-                    child: const Text('Submit Project'),
-                  ),
+            TextField(controller: _namaController, decoration: InputDecoration(labelText: 'Nama')),
+            TextField(controller: _deskripsiController, decoration: InputDecoration(labelText: 'Deskripsi')),
+            SizedBox(height: 20),
+            ElevatedButton(onPressed: _submit, child: Text('Submit'))
           ],
         ),
       ),

@@ -1,11 +1,8 @@
 const { Pool } = require('pg');
+require('dotenv').config();
 
 const pool = new Pool({
-  user: 'massapp',
-  host: 'localhost',
-  database: 'massappdb',
-  password: 'Curup1991',
-  port: 5432,
+  connectionString: process.env.DATABASE_URL
 });
 
 module.exports = pool;
