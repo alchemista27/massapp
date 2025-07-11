@@ -1,0 +1,48 @@
+#!/bin/bash
+echo "=== 🚨 MASSAPP FULL AUTO FIX + SEED Projects & Quizzes ==="
+
+# Ambil DB URL
+DB_URL=$(grep DATABASE_URL backend/.env | cut -d '=' -f2)
+echo "✅ Using DB: $DB_URL"
+
+# Step 1: Drop kolom 'title' kalau masih ada
+echo "➡️  Dropping unused columns..."
+psql "$DB_URL" <<EOF
+DO \$\$
+BEGIN
+  IF EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='projects' AND column_name='title') THEN
+    ALTER TABLE projects DROP COLUMN title;
+  END IF;
+  IF EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='quizzes' AND column_name='title') THEN
+    ALTER TABLE quizzes DROP COLUMN title;
+  END IF;
+END
+\$\$;
+EOF
+
+echo "✅ Old columns dropped successfully."
+
+# Step 2: Auto Seeder Data Projects & Quizzes
+echo "➡️  Seeding Projects..."
+psql "$DB_URL" <<EOF
+INSERT INTO projects (materi_id, judul, deskripsi, deadline)
+VALUES
+  (1, 'Project Pemula', 'Latihan teknik dasar sport massage', '2025-07-31'),
+  (2, 'Project Lanjutan', 'Latihan teknik lanjutan sport massage', '2025-08-31');
+EOF
+
+echo "➡️  Seeding Quizzes..."
+psql "$DB_URL" <<EOF
+INSERT INTO quizzes (materi_id, pertanyaan, jawaban_benar)
+VALUES
+  (1, 'Apa langkah pertama dalam sport massage?', 'Pemanasan otot'),
+  (2, 'Berapa lama durasi ideal untuk pemanasan?', '10 menit');
+EOF
+
+echo "✅ Seeding completed successfully."
+
+# Step 3: Restart Backend
+echo "➡️  Restarting backend (PM2)..."
+pm2 restart massapp-backend
+
+echo "✅ ALL DONE! Seeder siap pakai!"
