@@ -65,6 +65,10 @@ class _MateriDetailPageState extends State<MateriDetailPage> {
                       title: Text(q['pertanyaan']),
                       subtitle: Text('Jawaban: ${q['jawaban_benar']}'),
                     )),
+                ElevatedButton(
+  onPressed: () {},
+  child: const Text('Daftar Materi Sekarang'),
+),
               ],
             ),
     );
