@@ -22,7 +22,7 @@ class _LoginPageState extends State<LoginPage> {
     });
 
     final response = await http.post(
-      Uri.parse('http://[IP_VPS_KAMU]:5000/api/login'),
+      Uri.parse('http://107.174.26.23/massapp/api
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode({
         'email': emailController.text,

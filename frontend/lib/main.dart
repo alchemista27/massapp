@@ -1,24 +1,67 @@
 import 'package:flutter/material.dart';
 import 'services/api_service.dart';
-import 'pages/home_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  bool loggedIn = await ApiService.login('admin@massapp.com', '181818');
-  runApp(MyApp(loggedIn: loggedIn));
+  await ApiService.loadConfig();
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  final bool loggedIn;
-  const MyApp({super.key, required this.loggedIn});
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'MassApp',
       theme: ThemeData(primarySwatch: Colors.blue),
-      home: loggedIn ? const HomePage() : const Scaffold(body: Center(child: Text('Login gagal'))),
-      debugShowCheckedModeBanner: false,
+      home: const LoginPage(),
+    );
+  }
+}
+
+class LoginPage extends StatefulWidget {
+  const LoginPage({super.key});
+  @override
+  _LoginPageState createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+  final emailController = TextEditingController(text: "admin@massapp.com");
+  final passwordController = TextEditingController(text: "181818");
+  String message = "";
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text("Login")),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          children: [
+            TextField(controller: emailController, decoration: const InputDecoration(labelText: "Email")),
+            TextField(controller: passwordController, decoration: const InputDecoration(labelText: "Password"), obscureText: true),
+            const SizedBox(height: 16),
+            ElevatedButton(
+              onPressed: () async {
+                try {
+                  final res = await ApiService.login(emailController.text, passwordController.text);
+                  setState(() {
+                    message = "Login berhasil! Token: ${res['token']}";
+                  });
+                } catch (e) {
+                  setState(() {
+                    message = "Login gagal: $e";
+                  });
+                }
+              },
+              child: const Text("Login"),
+            ),
+            const SizedBox(height: 16),
+            Text(message),
+          ],
+        ),
+      ),
     );
   }
 }
